@@ -19,6 +19,27 @@ public class Intersection {
 		return retVal;
 	}
 
+	
+	public void addOutStreet(Street street) {
+		outStreets.put(street.getName(), street);
+	}
+	
+	public int getIsId() {
+		return isId;
+	}
+	
+	public void setIsId(int isId) {
+		this.isId = isId;
+	}
+
+	public HashMap<String, Integer> getStreetToNumber() {
+		return streetToNumber;
+	}
+
+	public void setStreetToNumber(HashMap<String, Integer> streetToNumber) {
+		this.streetToNumber = streetToNumber;
+	}
+/*
 	public void addInStreet(Street street) {
 		greenTime.add(1);
 		
@@ -32,45 +53,6 @@ public class Intersection {
 		waiting.add(tmpQueue);
 	}
 	
-	public void addOutStreet(Street street) {
-		outStreets.put(street.getName(), street);
-	}
-	
-	public int getID() {
-		return isId;
-	}
-	
-	public void setID(int iD) {
-		isId = iD;
-	}
-
-	public HashMap<String, Integer> getStreetToNumber() {
-		return streetToNumber;
-	}
-
-	public void setStreetToNumber(HashMap<String, Integer> streetToNumber) {
-		this.streetToNumber = streetToNumber;
-	}
-	
-	
-	/*
-	public int timeToGreen(int zeit, int position) {
-		int retVal = 0;
-		int gesamtzeit = gesamtzeit();
-		
-		
-		//Alle Grünzeiten die kleiner als die aktuelle 
-		//Position sind addieren 
-		int tmp = 0;
-		for(int i = 0; i<position;i++) {
-			tmp+=greenTime.get(i);
-		}
-		retVal = (gesamtzeit - (zeit%gesamtzeit) ) + tmp;
-		
-		
-		return retVal; 
-		
-	}
 	*/
 
 }
