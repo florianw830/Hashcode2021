@@ -26,20 +26,22 @@ public class Car {
 		if(parking) {
 			return;
 		}
+		
 		currentTime++;
 		counter--;
-		if(getCounter() ==0) {			
+		if(getCounter() ==0) {
+			if(route.size() == 0) {
+				//Ziel erreicht
+				this.parking = true;
+				return;
+			}
 			currentStreet.getQueue().add(this);
 
 
 		}
 		if(getCounter() <0) {
 			if(canDrive()) {
-				if(route.size() == 0) {
-					//Ziel erreicht
-					this.parking = true;
-					return;
-				}
+
 				String nextHop = route.poll();
 				Street newStreet = this.currentStreet.getInIntersection().getOutStreetByName(nextHop);
 				currentStreet.getQueue().remove(0);
