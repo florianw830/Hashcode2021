@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Intersection {
-	private int ID;
+	private int isId;
 	private ArrayList<Integer> greenTime = new ArrayList<Integer>();
 	private ArrayList<LinkedBlockingQueue<Car>> waiting = new ArrayList<LinkedBlockingQueue<Car>>();
 	private HashMap<String, Street> outStreets = new HashMap<String,Street>();
@@ -55,11 +55,11 @@ public class Intersection {
 	}
 	
 	public int getID() {
-		return ID;
+		return isId;
 	}
 	
 	public void setID(int iD) {
-		ID = iD;
+		isId = iD;
 	}
 
 	public HashMap<String, Integer> getStreetToNumber() {
