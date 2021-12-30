@@ -22,7 +22,7 @@ public class Car {
 		return retVal;
 	}
 	
-	public void Tick() {
+	public void tick() {
 		if(parking) {
 			return;
 		}
