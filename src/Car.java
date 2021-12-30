@@ -5,6 +5,7 @@ public class Car {
 	private LinkedList<String> route;
 	private int counter = 0;
 	private int currentTime = 0;
+	private boolean parking = false;
 	
 	public static Car fromString(String str) {
 		Car retVal = new Car();
@@ -15,26 +16,36 @@ public class Car {
 		}
 		//so landen die Autos beim ersten Tick in den richtigen Queues
 		String firstStreet = retVal.route.poll();
-		retVal.counter = 0;
+		retVal.counter = 1;
 		retVal.currentStreet = Street.streets.get(firstStreet);
 		
 		return retVal;
 	}
 	
 	public void Tick() {
+		if(parking) {
+			return;
+		}
 		currentTime++;
 		counter--;
 		if(getCounter() ==0) {			
-			currentStreet.getQueue().add(this);		
+			currentStreet.getQueue().add(this);
+
 
 		}
 		if(getCounter() <0) {
 			if(canDrive()) {
+				if(route.size() == 0) {
+					//Ziel erreicht
+					this.parking = true;
+					return;
+				}
 				String nextHop = route.poll();
 				Street newStreet = this.currentStreet.getInIntersection().getOutStreetByName(nextHop);
 				currentStreet.getQueue().remove(0);
 				currentStreet = newStreet;
-				counter = currentStreet.getRuntime();	
+				counter = currentStreet.getRuntime();
+				
 			}
 		}
 	}
