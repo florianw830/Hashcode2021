@@ -7,6 +7,24 @@ public class Street {
 	private ArrayList<Car> queue;
 	private Intersection inIntersection;
 	
+	public static Street fromString(String str, ArrayList<Intersection> intersections) {
+		String[] tmp = str.split(" ");
+		int isOut = Integer.parseInt(tmp[0]);
+		int isIn = Integer.parseInt(tmp[1]);
+		int rt = Integer.parseInt(tmp[3]);
+		
+		Street retVal = new Street();
+		retVal.setName(tmp[2]);
+		retVal.setRuntime(rt);
+		
+		intersections.get(isOut).addOutStreet(retVal);
+		intersections.get(isIn).addInStreet(retVal);	
+		
+		return retVal;
+		
+		
+	}
+	
 	public String getName() {
 		return name;
 	}
