@@ -18,25 +18,7 @@ public class Intersection {
 		}
 		return retVal;
 	}
-	
-	public int timeToGreen(int zeit, int position) {
-		int retVal = 0;
-		int gesamtzeit = gesamtzeit();
-		
-		
-		//Alle Grünzeiten die kleiner als die aktuelle 
-		//Position sind addieren 
-		int tmp = 0;
-		for(int i = 0; i<position;i++) {
-			tmp+=greenTime.get(i);
-		}
-		retVal = (gesamtzeit - (zeit%gesamtzeit) ) + tmp;
-		
-		
-		return retVal; 
-		
-	}
-	
+
 	public void addInStreet(Street street) {
 		greenTime.add(1);
 		
@@ -70,5 +52,25 @@ public class Intersection {
 		this.streetToNumber = streetToNumber;
 	}
 	
+	
+	/*
+	public int timeToGreen(int zeit, int position) {
+		int retVal = 0;
+		int gesamtzeit = gesamtzeit();
+		
+		
+		//Alle Grünzeiten die kleiner als die aktuelle 
+		//Position sind addieren 
+		int tmp = 0;
+		for(int i = 0; i<position;i++) {
+			tmp+=greenTime.get(i);
+		}
+		retVal = (gesamtzeit - (zeit%gesamtzeit) ) + tmp;
+		
+		
+		return retVal; 
+		
+	}
+	*/
 
 }
