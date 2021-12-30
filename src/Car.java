@@ -22,6 +22,12 @@ public class Car {
 		return retVal;
 	}
 	
+	
+	/*
+	 * Wird pro Zyklus aufgerufen und sorgt dafür das sich das Auto entlang
+	 * einer Straße bewegt, an der Ampel wartet oder eine Kreuzung überquert.
+	 * Wenn das Auto parkt, dann passiert nichts.
+	 */
 	public void tick() {
 		if(parking) {
 			return;
@@ -29,6 +35,8 @@ public class Car {
 		
 		currentTime++;
 		counter--;
+		//Ist der Counter = 0, so sind wir am ende der  Straße angekommen
+		//und reihen uns in die Warteschlange an der Kreuzung ein.
 		if(getCounter() ==0) {
 			if(route.size() == 0) {
 				//Ziel erreicht
@@ -39,7 +47,10 @@ public class Car {
 
 
 		}
+		
+		//Es wird an einer Roten Ampel gewartet.
 		if(getCounter() <0) {
+			//Die Ampel ist grün und das aktuelle Auto ist das erste in der Warteschlange.
 			if(canDrive()) {
 
 				String nextHop = route.poll();
@@ -52,6 +63,11 @@ public class Car {
 		}
 	}
 	
+	
+	/*
+	 * Lierft true, wenn das Auto das erste in seiner Warteschlange ist und die ensprechende 
+	 * Ampel grün ist.
+	 */
 	private boolean canDrive() {
 		if(currentStreet.getQueue().get(0) == this) {
 			if(currentStreet.getInIntersection().isGreen(currentStreet,currentTime) == true) {
@@ -60,6 +76,8 @@ public class Car {
 		}
 		return false;
 	}
+	
+	//getter und setter
 
 	public int getCounter() {
 		return counter;
