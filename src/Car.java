@@ -6,6 +6,20 @@ public class Car {
 	private int counter = 0;
 	private int currentTime = 0;
 	
+	public static Car fromString(String str) {
+		Car retVal = new Car();
+		String[] tmp = str.split(" ");
+		retVal.route = new  LinkedList<String>();
+		for(int i= 1; i<tmp.length;i++) {
+			retVal.route.add(tmp[i]);
+		}
+		//so landen die Autos beim ersten Tick in den richtigen Queues
+		String firstStreet = retVal.route.poll();
+		retVal.counter = 0;
+		retVal.currentStreet = Street.streets.get(firstStreet);
+		
+		return retVal;
+	}
 	
 	public void Tick() {
 		currentTime++;
@@ -17,12 +31,10 @@ public class Car {
 		if(getCounter() <0) {
 			if(canDrive()) {
 				String nextHop = route.poll();
-
 				Street newStreet = this.currentStreet.getInIntersection().getOutStreetByName(nextHop);
 				currentStreet.getQueue().remove(0);
 				currentStreet = newStreet;
-				counter = currentStreet.getRuntime();
-						
+				counter = currentStreet.getRuntime();	
 			}
 		}
 	}
