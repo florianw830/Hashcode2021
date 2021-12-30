@@ -10,12 +10,15 @@ public class Car {
 	public static Car fromString(String str) {
 		Car retVal = new Car();
 		String[] tmp = str.split(" ");
+		
 		retVal.route = new  LinkedList<String>();
 		for(int i= 1; i<tmp.length;i++) {
 			retVal.route.add(tmp[i]);
 		}
+		
 		//so landen die Autos beim ersten Tick in den richtigen Queues
 		String firstStreet = retVal.route.poll();
+		
 		retVal.counter = 1;
 		retVal.currentStreet = Street.streets.get(firstStreet);
 		
@@ -44,21 +47,18 @@ public class Car {
 				return;
 			}
 			currentStreet.getQueue().add(this);
-
-
 		}
 		
 		//Es wird an einer Roten Ampel gewartet.
 		if(getCounter() <0) {
 			//Die Ampel ist grün und das aktuelle Auto ist das erste in der Warteschlange.
 			if(canDrive()) {
-
 				String nextHop = route.poll();
 				Street newStreet = this.currentStreet.getInIntersection().getOutStreetByName(nextHop);
+				
 				currentStreet.getQueue().remove(0);
 				currentStreet = newStreet;
 				counter = currentStreet.getRuntime();
-				
 			}
 		}
 	}

@@ -48,7 +48,6 @@ public class Intersection {
 		}
 		
 		return false;
-		
 	}
 	
 	public boolean isGreen(Street street, int time) {
@@ -57,6 +56,20 @@ public class Intersection {
 		return isGreen(relativTime, streetNo);
 	}
 
+	public void addInStreet(Street street) {
+		greenTime.add(1);
+		
+		int streetPosition = greenTime.size()-1;
+		ArrayList<Car> tmpQueue = new  ArrayList<Car>();
+		
+		street.setInIntersection(this);
+		street.setQueue(tmpQueue);
+		getStreetToNumber().put(street.getName(), streetPosition);
+		inStreets.put(streetPosition, street);
+		waiting.add(tmpQueue);
+	}
+	
+	//getter und setter
 	
 	public void addOutStreet(Street street) {
 		outStreets.put(street.getName(), street);
@@ -78,19 +91,7 @@ public class Intersection {
 		this.streetToNumber = streetToNumber;
 	}
 
-	public void addInStreet(Street street) {
-		greenTime.add(1);
-		
-		int streetPosition = greenTime.size()-1;
-		ArrayList<Car> tmpQueue = new  ArrayList<Car>();
-		
-		street.setInIntersection(this);
-		street.setQueue(tmpQueue);
-		getStreetToNumber().put(street.getName(), streetPosition);
-		inStreets.put(streetPosition, street);
-		waiting.add(tmpQueue);
-	}
-	
+
 
 
 }
