@@ -1,9 +1,10 @@
+import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Street {
 	private String name;
 	private int runtime = 0;
-	private LinkedBlockingQueue<Car> queue;
+	private ArrayList<Car> queue;
 	private Intersection inIntersection;
 	
 	public String getName() {
@@ -30,11 +31,11 @@ public class Street {
 		this.inIntersection = inIntersection;
 	}
 
-	public LinkedBlockingQueue<Car> getQueue() {
+	public ArrayList<Car> getQueue() {
 		return queue;
 	}
 
-	public void setQueue(LinkedBlockingQueue<Car> queue) {
+	public void setQueue(ArrayList<Car> queue) {
 		this.queue = queue;
 	}
 
