@@ -7,16 +7,14 @@ public class Strt {
 	    try {
 	        File myObj = new File("C:\\data\\HiDrive\\Data\\uni\\algo\\Java\\ocr\\a.txt");
 	        Scanner myReader = new Scanner(myObj);
-	        String data
-	        String firstLine = myReader.nextLine();
-	        int intersections:
+	        String data="";
 	        while (myReader.hasNextLine()) {
-	           data += myReader.nextLine();
+	           data += myReader.nextLine() + "\n";
 	          
 	        }
 	        myReader.close();
 	        
-	        System.out.println(data);
+	        Simulation s = Simulation.fromString(data);
 	      } catch (FileNotFoundException e) {
 	        System.out.println("An error occurred.");
 	        e.printStackTrace();

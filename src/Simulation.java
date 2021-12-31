@@ -13,23 +13,29 @@ public class Simulation {
 		int intersections = Integer.parseInt(_data[0].split(" ")[1]);
 		int streets = Integer.parseInt(_data[0].split(" ")[2]);
 		int cars = Integer.parseInt(_data[0].split(" ")[3]);
-	
+		System.out.println("simduration: "  + simDuration);
+		System.out.println("intersections: "  + intersections);
+		System.out.println("streets: "  + streets);
+		System.out.println("cars: "  + cars);
 		simulation.setDuration(simDuration);
 		
 		for (int i = 0; i<intersections;i++) {
 			Intersection tmp = new Intersection();
 			simulation.getIntersections().add(tmp);
+			System.out.println("intersections: "  + simulation.getIntersections().size());
 		}
 		int filePointer = 1;
 		for (; filePointer<streets;filePointer++) {
+			
 			Street s = Street.fromString(_data[filePointer], simulation.getIntersections());
 			simulation.getStreets().add(s);
+			System.out.println("streets: "  + simulation.getStreets().size());
 		}
-		
-		for (int i =0; i+filePointer<cars;i++) {
-			Street s = Street.fromString(_data[i+filePointer], simulation.getIntersections());
-			Car c = Car.fromString(_data[i+filePointer]);
+		System.out.println(filePointer);
+		for (int i =filePointer; i<filePointer+cars;i++) {
+			Car c = Car.fromString(_data[i]);
 			simulation.getCars().add(c);
+			System.out.println("cars: "  + simulation.getCars().size());
 		}
 		return simulation;
 		
