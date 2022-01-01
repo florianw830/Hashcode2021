@@ -13,12 +13,13 @@ public class Car {
 		
 		retVal.route = new  LinkedList<String>();
 		for(int i= 1; i<tmp.length;i++) {
+			//System.out.println("Add" + tmp[i]);
 			retVal.route.add(tmp[i]);
 		}
 		
 		//so landen die Autos beim ersten Tick in den richtigen Queues
 		String firstStreet = retVal.route.poll();
-		
+		System.out.println("First Street" + firstStreet);
 		retVal.counter = 1;
 		retVal.currentStreet = Street.streets.get(firstStreet);
 		
@@ -32,18 +33,20 @@ public class Car {
 	 * Wenn das Auto parkt, dann passiert nichts.
 	 */
 	public void tick() {
-		if(parking) {
+		if(isParking()) {
 			return;
 		}
 		
 		currentTime++;
 		counter--;
+		System.out.println(currentTime + " " + counter + " " + route.size());
 		//Ist der Counter = 0, so sind wir am ende der  Straße angekommen
 		//und reihen uns in die Warteschlange an der Kreuzung ein.
 		if(getCounter() ==0) {
 			if(route.size() == 0) {
 				//Ziel erreicht
-				this.parking = true;
+				
+				this.setParking(true);
 				return;
 			}
 			currentStreet.getQueue().add(this);
@@ -57,6 +60,7 @@ public class Car {
 				Street newStreet = this.currentStreet.getInIntersection().getOutStreetByName(nextHop);
 				
 				currentStreet.getQueue().remove(0);
+				
 				currentStreet = newStreet;
 				counter = currentStreet.getRuntime();
 			}
@@ -93,6 +97,16 @@ public class Car {
 
 	public void setCurrentStreet(Street currentStreet) {
 		this.currentStreet = currentStreet;
+	}
+
+
+	public boolean isParking() {
+		return parking;
+	}
+
+
+	public void setParking(boolean parking) {
+		this.parking = parking;
 	}
 
 }

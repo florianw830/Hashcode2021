@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 public class Simulation {
-	private ArrayList<ArrayList<Integer>> greenLightConfig = new ArrayList<ArrayList<Integer>>();
+	//private ArrayList<ArrayList<Integer>> greenLightConfig = new ArrayList<ArrayList<Integer>>();
+	private GreenlightConfig greenLightConfig = new GreenlightConfig();
 	private ArrayList<Intersection> intersections = new ArrayList<Intersection>();
 	private ArrayList<Street> streets = new ArrayList<Street>();
 	private ArrayList<Car> cars = new ArrayList<Car>();
@@ -22,29 +23,51 @@ public class Simulation {
 		for (int i = 0; i<intersections;i++) {
 			Intersection tmp = new Intersection();
 			simulation.getIntersections().add(tmp);
-			System.out.println("intersections: "  + simulation.getIntersections().size());
+			//System.out.println("intersections: "  + simulation.getIntersections().size());
 		}
 		int filePointer = 1;
-		for (; filePointer<streets;filePointer++) {
+		for (; filePointer<=streets;filePointer++) {
 			
 			Street s = Street.fromString(_data[filePointer], simulation.getIntersections());
 			simulation.getStreets().add(s);
-			System.out.println("streets: "  + simulation.getStreets().size());
+			//System.out.println("streets: "  + simulation.getStreets().size());
 		}
 		System.out.println(filePointer);
 		for (int i =filePointer; i<filePointer+cars;i++) {
 			Car c = Car.fromString(_data[i]);
 			simulation.getCars().add(c);
-			System.out.println("cars: "  + simulation.getCars().size());
+			//System.out.println("cars: "  + simulation.getCars().size());
+		}
+		
+		for(Intersection i : simulation.getIntersections()) {
+			simulation.getGreenLightConfig().add(i.shuffleGreenTime(simDuration));
 		}
 		return simulation;
 		
 	}
-	public ArrayList<ArrayList<Integer>> getGreenLightConfig() {
+	public void simulate() {
+		for(int i = 0;i<=this.duration+1;i++) {
+			System.out.println("TIME: " + i);
+			for(Car c: cars) {
+				
+
+				c.tick();
+				System.out.println(c.getCurrentStreet().getName());
+				System.out.println(c.isParking());
+			}
+		}
+	}
+	
+	public GreenlightConfig getGreenLightConfig() {
 		return greenLightConfig;
 	}
-	public void setGreenLightConfig(ArrayList<ArrayList<Integer>> greenLightConfig) {
+	public void setGreenLightConfig(GreenlightConfig greenLightConfig) {
 		this.greenLightConfig = greenLightConfig;
+		for(int i = 0;i<this.greenLightConfig.getConfig().size();i++) {
+			ArrayList<Integer> tmp = new ArrayList<Integer>(greenLightConfig.getConfig().get(i));
+			this.intersections.get(i).setGreenTime(tmp);
+		}
+		
 	}
 	private ArrayList<Intersection> getIntersections() {
 		return intersections;

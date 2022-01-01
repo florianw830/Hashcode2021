@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Intersection {
@@ -13,7 +13,7 @@ public class Intersection {
 	
 	public int getTotalTime() {
 		int retVal = 0;
-		for(Integer i : greenTime) {
+		for(Integer i : getGreenTime()) {
 			retVal+=i;
 		}
 		return retVal;
@@ -36,8 +36,8 @@ public class Intersection {
 	private boolean isGreen(int relativTime, int street) {
 		int last = 0;
 		int tmp= 0;
-		for(int i = 0; i<greenTime.size();i++) {
-			tmp += greenTime.get(i);
+		for(int i = 0; i<getGreenTime().size();i++) {
+			tmp += getGreenTime().get(i);
 			if(tmp >= relativTime) {
 				break;
 			}
@@ -57,9 +57,9 @@ public class Intersection {
 	}
 
 	public void addInStreet(Street street) {
-		greenTime.add(1);
+		getGreenTime().add(1);
 		
-		int streetPosition = greenTime.size()-1;
+		int streetPosition = getGreenTime().size()-1;
 		ArrayList<Car> tmpQueue = new  ArrayList<Car>();
 		
 		street.setInIntersection(this);
@@ -90,6 +90,31 @@ public class Intersection {
 	public void setStreetToNumber(HashMap<String, Integer> streetToNumber) {
 		this.streetToNumber = streetToNumber;
 	}
+	
+	public ArrayList<Integer> setGreenTimeToOne(){
+		for(int i =0;i<outStreets.size();i++) {
+			getGreenTime().add(1);
+		}
+		return new ArrayList<Integer>(this.getGreenTime());
+	}
+	
+	public ArrayList<Integer> shuffleGreenTime(int max){
+		for(int i =0;i<outStreets.size();i++) {
+			Random rand = new Random();
+			int randomNum = rand.nextInt((max - 0) + 1) + 0;
+			getGreenTime().add(randomNum);
+		}
+		return new ArrayList<Integer>(this.getGreenTime());
+	}
+
+	public ArrayList<Integer> getGreenTime() {
+		return greenTime;
+	}
+
+	public void setGreenTime(ArrayList<Integer> greenTime) {
+		this.greenTime = greenTime;
+	}
+	
 
 
 

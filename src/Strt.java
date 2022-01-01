@@ -15,6 +15,7 @@ public class Strt {
 	        myReader.close();
 	        
 	        Simulation s = Simulation.fromString(data);
+	        s.simulate();
 	      } catch (FileNotFoundException e) {
 	        System.out.println("An error occurred.");
 	        e.printStackTrace();
