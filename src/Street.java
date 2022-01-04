@@ -21,13 +21,11 @@ public class Street {
 		retVal.setRuntime(rt);
 		
 		streets.put(tmp[2], retVal);
-		
+		//System.out.println(retVal.name + " out " + isOut + " in "+ isIn);
 		intersections.get(isOut).addOutStreet(retVal);
 		intersections.get(isIn).addInStreet(retVal);	
 		
 		return retVal;
-		
-		
 	}
 	
 	public String getName() {
