@@ -75,7 +75,8 @@ public class Simulation implements Comparable<Simulation>{
 			//System.out.println("cars: "  + simulation.getCars().size());
 		}
 		if(gc) {
-			simulation.shuffle();
+			//simulation.shuffle();
+			simulation.toOne();
 		}
 		//simulation.toOne();
 		return simulation;

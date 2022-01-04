@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class Strt {
 	public static void main(String[] args) {
 	    try {
-	        String f = "a.txt";
+	        String f = "e.txt";
 	        String p = "C:\\data\\HiDrive\\Data\\uni\\algo\\Java\\ocr\\";
 	    	File myObj = new File(p+f);
 	        
