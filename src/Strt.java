@@ -30,27 +30,49 @@ public class Strt {
 	        gc.add(2);
 	        ArrayList<Simulation> sims = new ArrayList<Simulation>();
 	        PriorityQueue<Simulation> q = new PriorityQueue<Simulation>();
+	        int best =0;
+	        Simulation bestSim = null;
 	        for(int i = 0; i< 100;i++) {
 	        	Simulation s = Simulation.fromString(data,true);
+	        	if(s.getFinishScore()>best) {
+	        		best=s.getFinishScore();
+	        		bestSim =s;
+	        	}
 	        	System.out.println(i + " " + s.simulate());
 	        	q.add(s);
 	        }
 	        
-	        for(int x =0; x <100;x++) {
-	        	System.out.println("Generation " + x);
+	        for(int ll =0; ll <1000;ll++) {
+		        int tbest =0;
+
+	        	System.out.println("Generation " + ll);
 	        	PriorityQueue<Simulation> tq = new PriorityQueue<Simulation>();
-	        	for(int i = 0; i< 10;i++) {
+	        	for(int i = 0; i< 5;i++) {
 	        		Simulation parent = q.poll();
+	        		q.add(parent);
 	        		for(int n= 0; n<10;n++) {
 	        			Simulation s = Simulation.fromString(data,false);
-	        			s.setGreenLightConfig(parent.mutate());
-	        			System.out.println(i*n + " " +s.simulate());
+	        			s.setGreenLightConfig(parent.mutateG());
+	        			s.setOrder(parent.mutateO());
+	        			s.simulate();
+	    	        	if(s.getFinishScore()>best) {
+	    	        		best=s.getFinishScore();
+	    	        		bestSim =s;
+	    	        		tbest = best;
+	    	        	}
+	    	        	
 	        			tq.add(s);
 	        		}
 	        	}
-	        	for(int k=0;k<10;k++) {
-	        		q.add(tq.poll());
-	        	}
+	        	//if(tbest==best) {
+	        	q = tq;
+	        	//}
+	        	
+	        	
+	        	System.out.println(best + " " + tq.peek().getFinishScore());
+	        	//for(int k=0;k<10;k++) {
+	        	//	q.add(tq.poll());
+	        	//}
 	        	
 	        }
 	        
@@ -59,7 +81,7 @@ public class Strt {
 	        FileWriter myWriter;
 			try {
 				myWriter = new FileWriter(p+f + ".out.txt");
-				Simulation out = q.poll();
+				Simulation out = bestSim;
 				System.out.println("====" + out.getFinishScore());
 		        myWriter.write(out.createFileContent());
 		        myWriter.close();

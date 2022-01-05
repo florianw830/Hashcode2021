@@ -1,24 +1,36 @@
 import java.util.ArrayList;
+import java.util.Random;
 
-public class GreenlightConfig {
-	private ArrayList<ArrayList<Integer>> config = new ArrayList<ArrayList<Integer>>();
-	
-	public void add(int... cfg) {
-		ArrayList<Integer> tmp = new ArrayList<Integer>();
-		for(int i : cfg) {
-			tmp.add(i);
+public class GreenlightConfig extends Chromosom{
+	private int duration = 0;
+	public GreenlightConfig mutate() {
+		GreenlightConfig cfg = new GreenlightConfig();
+		for(ArrayList<Integer> tmp : this.getConfig()) {
+			ArrayList<Integer> t =  new ArrayList<Integer>();
+			for(int i =0;i<tmp.size();i++) {
+				Random rand = new Random();
+				int n = rand.nextInt(99);
+				if(n>0 & n <5) {
+					int k = rand.nextInt(10)+1;
+					int m = tmp.get(i)+k >= getDuration() ? getDuration() :tmp.get(i)+1;
+					t.add(m);
+				}else if(n>5 & n <10) {
+					int k = rand.nextInt(10)+1;
+					int m = tmp.get(i)-k <=0 ?tmp.get(i):tmp.get(i)-k;
+					t.add(m);
+				}else {
+					t.add(tmp.get(i));
+				}
+				
+			}
+			cfg.add(t);
 		}
-		getConfig().add(tmp);
+		return cfg;
 	}
-	public void add(ArrayList<Integer> cfg) {
-		ArrayList<Integer> tmp = new ArrayList(cfg);
-		config.add(tmp);
+	public int getDuration() {
+		return duration;
 	}
-	public ArrayList<ArrayList<Integer>> getConfig() {
-		return config;
-	}
-
-	public void setConfig(ArrayList<ArrayList<Integer>> config) {
-		this.config = config;
+	public void setDuration(int duration) {
+		this.duration = duration;
 	}
 }

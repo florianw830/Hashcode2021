@@ -4,6 +4,7 @@ import java.util.Random;
 public class Simulation implements Comparable<Simulation>{
 	//private ArrayList<ArrayList<Integer>> greenLightConfig = new ArrayList<ArrayList<Integer>>();
 	private GreenlightConfig greenLightConfig = new GreenlightConfig();
+	private Order order = new Order();
 	private ArrayList<Intersection> intersections = new ArrayList<Intersection>();
 	private ArrayList<Street> streets = new ArrayList<Street>();
 	private ArrayList<Car> cars = new ArrayList<Car>();
@@ -12,29 +13,12 @@ public class Simulation implements Comparable<Simulation>{
 	
 	
 	
-	public GreenlightConfig mutate() {
-		GreenlightConfig cfg = new GreenlightConfig();
-		for(ArrayList<Integer> tmp : this.greenLightConfig.getConfig()) {
-			ArrayList<Integer> t =  new ArrayList<Integer>();
-			for(int i =0;i<tmp.size();i++) {
-				Random rand = new Random();
-				int n = rand.nextInt(99);
-				if(n>0 & n <10) {
-					int k = rand.nextInt(10)+1;
-					int m = tmp.get(i)+k >= duration ? duration :tmp.get(i)+1;
-					t.add(m);
-				}else if(n>10 & n <20) {
-					int k = rand.nextInt(10)+1;
-					int m = tmp.get(i)-k <=0 ?tmp.get(i):tmp.get(i)-k;
-					t.add(m);
-				}else {
-					t.add(tmp.get(i));
-				}
-				
-			}
-			cfg.add(t);
-		}
-		return cfg;
+	public GreenlightConfig mutateG() {
+		greenLightConfig.setDuration(duration);
+		return greenLightConfig.mutate();
+	}
+	public Order mutateO() {
+		return order.mutate();
 	}
 	
 	public static Simulation fromString(String data, boolean gc) {
@@ -75,13 +59,21 @@ public class Simulation implements Comparable<Simulation>{
 			//System.out.println("cars: "  + simulation.getCars().size());
 		}
 		if(gc) {
-			//simulation.shuffle();
-			simulation.toOne();
+			simulation.shuffle();
+			//simulation.toOne();
+			simulation.numOrder();
 		}
 		//simulation.toOne();
 		return simulation;
 		
 	}
+	private void numOrder() {
+		this.order = new Order();
+		for(Intersection i : getIntersections()) {
+			order.add(i.numOrder());
+		}
+	}
+	
 	private void toOne() {
 		this.greenLightConfig = new GreenlightConfig();
 		for(Intersection i : getIntersections()) {
@@ -124,6 +116,14 @@ public class Simulation implements Comparable<Simulation>{
 	public GreenlightConfig getGreenLightConfig() {
 		return greenLightConfig;
 	}
+	public void setOrder(Order order) {
+		this.order =order;
+		for(int i = 0;i<this.order.getConfig().size();i++) {
+			ArrayList<Integer> tmp = new ArrayList<Integer>(order.getConfig().get(i));
+			this.intersections.get(i).setOrder(tmp);
+		}
+	}
+	
 	public void setGreenLightConfig(GreenlightConfig greenLightConfig) {
 		this.greenLightConfig = greenLightConfig;
 		for(int i = 0;i<this.greenLightConfig.getConfig().size();i++) {

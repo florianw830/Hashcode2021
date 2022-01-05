@@ -134,6 +134,14 @@ public class Intersection {
 		return new ArrayList<Integer>(this.getGreenTime());
 	}
 	
+	public ArrayList<Integer> numOrder(){
+		this.order = new ArrayList<Integer>();
+		for(int i =0;i<inStreets.size();i++) {
+			this.getOrder().add(i);
+		}
+		return new ArrayList<Integer>(this.getOrder());
+	}
+	
 	public ArrayList<Integer> shuffleGreenTime(int max){
 		this.greenTime = new ArrayList<Integer>();
 		for(int i =0;i<inStreets.size();i++) {
