@@ -10,7 +10,7 @@ public class Order extends Chromosom{
 			for(int x=0;x<tmp.size();x++) {
 				Random rand = new Random();
 				int n = rand.nextInt(99);
-				if(n>0 & n <2) {
+				if(n>0 & n <5) {
 					int a = rand.nextInt(tmp.size());
 					int b = rand.nextInt(tmp.size());
 					int t = tmp.get(a);

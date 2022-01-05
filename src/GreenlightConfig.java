@@ -10,11 +10,11 @@ public class GreenlightConfig extends Chromosom{
 			for(int i =0;i<tmp.size();i++) {
 				Random rand = new Random();
 				int n = rand.nextInt(99);
-				if(n>0 & n <5) {
+				if(n>0 & n <10) {
 					int k = rand.nextInt(10)+1;
 					int m = tmp.get(i)+k >= getDuration() ? getDuration() :tmp.get(i)+1;
 					t.add(m);
-				}else if(n>5 & n <10) {
+				}else if(n>=10 & n <20) {
 					int k = rand.nextInt(10)+1;
 					int m = tmp.get(i)-k <=0 ?tmp.get(i):tmp.get(i)-k;
 					t.add(m);

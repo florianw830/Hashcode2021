@@ -34,22 +34,27 @@ public class Strt {
 	        Simulation bestSim = null;
 	        for(int i = 0; i< 100;i++) {
 	        	Simulation s = Simulation.fromString(data,true);
+	        	System.out.println(i + " " + s.simulate());
 	        	if(s.getFinishScore()>best) {
 	        		best=s.getFinishScore();
 	        		bestSim =s;
 	        	}
-	        	System.out.println(i + " " + s.simulate());
+	        	
 	        	q.add(s);
 	        }
-	        
+	        System.out.println("Best " + best);
 	        for(int ll =0; ll <1000;ll++) {
 		        int tbest =0;
-
+		        int oldBest = best;
 	        	System.out.println("Generation " + ll);
 	        	PriorityQueue<Simulation> tq = new PriorityQueue<Simulation>();
-	        	for(int i = 0; i< 5;i++) {
+	        	ArrayList<Simulation> tmpSimu = new ArrayList<Simulation>();
+	        	for(int i = 0; i< 20;i++) {
+
 	        		Simulation parent = q.poll();
-	        		q.add(parent);
+	        		tmpSimu.add(parent);
+	        		//q.add(parent);
+	        		
 	        		for(int n= 0; n<10;n++) {
 	        			Simulation s = Simulation.fromString(data,false);
 	        			s.setGreenLightConfig(parent.mutateG());
@@ -63,13 +68,28 @@ public class Strt {
 	    	        	
 	        			tq.add(s);
 	        		}
+	        		if(q.size() ==0) {
+	        			for(Simulation j : tmpSimu) {
+	        				q.offer(j);
+	        			}
+	        		}
+
 	        	}
-	        	//if(tbest==best) {
-	        	q = tq;
-	        	//}
+	
+        		while(tq.size()>0) {
+	        		Simulation tS = tq.poll();
+	        		if(tS.getFinishScore()>=oldBest){
+	        			q.add(tS);
+	        		}else {
+	        			break;
+	        		}
+        		}
+
+	        		
 	        	
 	        	
-	        	System.out.println(best + " " + tq.peek().getFinishScore());
+	        	
+	        	System.out.println(best + " " + oldBest);
 	        	//for(int k=0;k<10;k++) {
 	        	//	q.add(tq.poll());
 	        	//}

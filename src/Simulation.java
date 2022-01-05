@@ -59,14 +59,23 @@ public class Simulation implements Comparable<Simulation>{
 			//System.out.println("cars: "  + simulation.getCars().size());
 		}
 		if(gc) {
-			simulation.shuffle();
-			//simulation.toOne();
+			//simulation.shuffle();
+			simulation.toOne();
 			simulation.numOrder();
 		}
 		//simulation.toOne();
 		return simulation;
 		
 	}
+	public void restart() {
+		this.finishScore = 0;
+		for(Car c: this.cars) {
+			c.restart();
+		}
+		this.order = this.mutateO();
+		this.greenLightConfig = this.mutateG();
+	}
+	
 	private void numOrder() {
 		this.order = new Order();
 		for(Intersection i : getIntersections()) {

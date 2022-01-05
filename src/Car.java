@@ -2,6 +2,7 @@ import java.util.LinkedList;
 
 public class Car {
 	private Street currentStreet;
+	private LinkedList<String> originalRoute;
 	private LinkedList<String> route;
 	private int carID = 0;
 	private int counter = 0;
@@ -12,20 +13,31 @@ public class Car {
 	public static Car fromString(String str) {
 		Car retVal = new Car();
 		String[] tmp = str.split(" ");
-		
-		retVal.route = new  LinkedList<String>();
+		retVal.originalRoute = new  LinkedList<String>();
 		for(int i= 1; i<tmp.length;i++) {
 			//System.out.println("Add" + tmp[i]);
-			retVal.route.add(tmp[i]);
+			retVal.originalRoute.add(tmp[i]);
+		}
+		retVal.restart();
+		return retVal;
+	}
+	
+	
+
+
+	public void restart() {
+		this.route = new  LinkedList<String>();
+		for(int i= 0; i<this.originalRoute.size();i++) {
+			//System.out.println("Add" + tmp[i]);
+			this.route.add(this.originalRoute.get(i));
 		}
 		
 		//so landen die Autos beim ersten Tick in den richtigen Queues
-		String firstStreet = retVal.route.poll();
+		String firstStreet = this.route.poll();
 		//System.out.println("First Street" + firstStreet);
-		retVal.counter = 0;
-		retVal.currentStreet = Street.streets.get(firstStreet);
-		retVal.currentStreet.getQueue().add(retVal);
-		return retVal;
+		this.counter = 0;
+		this.currentStreet = Street.streets.get(firstStreet);
+		this.currentStreet.getQueue().add(this);
 	}
 	
 	
@@ -143,6 +155,20 @@ public class Car {
 
 	public void setCarID(int carID) {
 		this.carID = carID;
+	}
+
+
+
+
+	public LinkedList<String> getOriginalRoute() {
+		return originalRoute;
+	}
+
+
+
+
+	public void setOriginalRoute(LinkedList<String> originalRoute) {
+		this.originalRoute = originalRoute;
 	}
 
 }
