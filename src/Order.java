@@ -1,11 +1,17 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Order extends Chromosom{
-
-	@Override
-	public Order mutate() {
-		Order retVal =  new Order();
+public class Order extends Chromosom implements Mutateable<Order>{
+	public Order(Chromosom c) {
+		super(c);
+		this.setConfig(c.getConfig());
+	}
+	
+	public Order() {
+		super();
+	}
+	public void mutate() {
+		
 		for(ArrayList<Integer> tmp : this.getConfig()) {
 			for(int x=0;x<tmp.size();x++) {
 				Random rand = new Random();
@@ -18,10 +24,8 @@ public class Order extends Chromosom{
 					tmp.set(b, t);
 				}	
 			}
-			ArrayList<Integer> ne = new ArrayList<Integer>(tmp);
-			retVal.add(ne);
-		}
-		return retVal;
-	}
 
+		}
+	}
+	
 }

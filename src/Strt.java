@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class Strt {
 	public static void main(String[] args) {
 	    try {
-	        String f = "e.txt";
+	        String f = "f.txt";
 	        String p = "C:\\data\\HiDrive\\Data\\uni\\algo\\Java\\ocr\\";
 	    	File myObj = new File(p+f);
 	        
@@ -32,15 +32,32 @@ public class Strt {
 	        PriorityQueue<Simulation> q = new PriorityQueue<Simulation>();
 	        int best =0;
 	        Simulation bestSim = null;
+	        Simulation s1 = Simulation.fromString(data,true,true);
+	        s1.simulate();
+        	if(s1.getFinishScore()>best) {
+        		best=s1.getFinishScore();
+        		bestSim =s1;
+        	}
+        	q.add(s1);
+        	s1 = Simulation.fromString(data,true,true);
+	        s1.simulate();
+        	if(s1.getFinishScore()>best) {
+        		best=s1.getFinishScore();
+        		bestSim =s1;
+        	}
+        	q.add(s1);
 	        for(int i = 0; i< 100;i++) {
-	        	Simulation s = Simulation.fromString(data,true);
+	        	Simulation s = Simulation.fromString(data,true,false);
 	        	System.out.println(i + " " + s.simulate());
+	        	//System.out.println("ääää" + s.getGreenLightConfig().getCrosoverType());
 	        	if(s.getFinishScore()>best) {
 	        		best=s.getFinishScore();
 	        		bestSim =s;
 	        	}
-	        	
+	        	//System.out.println("uuuu" + s.getGreenLightConfig().getCrosoverType());
 	        	q.add(s);
+	        	//System.out.println("pppp" + s.getGreenLightConfig().getCrosoverType());
+	        	//System.out.println("gggg" + q.poll().getGreenLightConfig().getCrosoverType());
 	        }
 	        System.out.println("Best " + best);
 	        for(int ll =0; ll <1000;ll++) {
@@ -48,42 +65,45 @@ public class Strt {
 		        int oldBest = best;
 	        	System.out.println("Generation " + ll);
 	        	PriorityQueue<Simulation> tq = new PriorityQueue<Simulation>();
-	        	ArrayList<Simulation> tmpSimu = new ArrayList<Simulation>();
-	        	for(int i = 0; i< 20;i++) {
+	        	for(int i = 0; i< 20 ;i++) {
+	        		System.out.println(i +" " +q.size());
+	        		int zz= i<3?5:1;
+	        		for(int ii =0;ii<zz;ii++) {
+	        			//System.out.println(ii +" " +q.size());
+		        		Simulation parent1 = (Simulation) q.toArray()[i];
+		        		Simulation parent2 = (Simulation) q.toArray()[ii];
+		        		ArrayList<Chromosom> gCfgs = parent1.getGreenLightConfig().exchange(
+		        				parent2.getGreenLightConfig());
+		        		ArrayList<Chromosom> oCfgs = parent1.getOrder().exchange(
+		        				parent2.getOrder());
+		        		for(int k=0;k<2;k++) {
+		        			Simulation c = Simulation.fromString(data,false,false);
+		        			c.setGreenlightConfig(gCfgs.get(k),true);
+		        			
+		        			c.setOrder(oCfgs.get(k),true);
+		        			c.simulate();
+		        			//System.out.println(c.getFinishScore());
+		        			if(c.getFinishScore()>best) {
+		    	        		best=c.getFinishScore();
+		    	        		bestSim =c;
+		    	        		tbest = best;
+		    	        		q.add(c);
+		        			}
+		        			//tq.add(c);
+		        		}
+		        		//System.out.println(tq.size());
+	        		}
 
-	        		Simulation parent = q.poll();
-	        		tmpSimu.add(parent);
-	        		//q.add(parent);
+	        		//System.out.println("öööö" + parent1.getGreenLightConfig().getCrosoverType());
 	        		
-	        		for(int n= 0; n<10;n++) {
-	        			Simulation s = Simulation.fromString(data,false);
-	        			s.setGreenLightConfig(parent.mutateG());
-	        			s.setOrder(parent.mutateO());
-	        			s.simulate();
-	    	        	if(s.getFinishScore()>best) {
-	    	        		best=s.getFinishScore();
-	    	        		bestSim =s;
-	    	        		tbest = best;
-	    	        	}
-	    	        	
-	        			tq.add(s);
-	        		}
-	        		if(q.size() ==0) {
-	        			for(Simulation j : tmpSimu) {
-	        				q.offer(j);
-	        			}
-	        		}
+	        		//q=tq;
+
+        		
+
 
 	        	}
-	
-        		while(tq.size()>0) {
-	        		Simulation tS = tq.poll();
-	        		if(tS.getFinishScore()>=oldBest){
-	        			q.add(tS);
-	        		}else {
-	        			break;
-	        		}
-        		}
+	       
+        		//q =tq;
 
 	        		
 	        	

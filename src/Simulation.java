@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+
 public class Simulation implements Comparable<Simulation>{
 	//private ArrayList<ArrayList<Integer>> greenLightConfig = new ArrayList<ArrayList<Integer>>();
 	private GreenlightConfig greenLightConfig = new GreenlightConfig();
@@ -13,15 +15,15 @@ public class Simulation implements Comparable<Simulation>{
 	
 	
 	
-	public GreenlightConfig mutateG() {
-		greenLightConfig.setDuration(duration);
-		return greenLightConfig.mutate();
-	}
-	public Order mutateO() {
-		return order.mutate();
-	}
+	//public GreenlightConfig mutateG() {
+		//greenLightConfig.setDuration(duration);
+		//return greenLightConfig.mutate();
+	//}
+	//public Order mutateO() {
+		//return order.mutate();
+	//}
 	
-	public static Simulation fromString(String data, boolean gc) {
+	public static Simulation fromString(String data, boolean gc,boolean toOne) {
 		String[] _data = data.split("\n");
 		Simulation simulation = new Simulation();
 		int simDuration = Integer.parseInt(_data[0].split(" ")[0]);
@@ -59,8 +61,13 @@ public class Simulation implements Comparable<Simulation>{
 			//System.out.println("cars: "  + simulation.getCars().size());
 		}
 		if(gc) {
-			//simulation.shuffle();
-			simulation.toOne();
+			if(toOne) {
+				simulation.toOne();
+			}else {
+				simulation.shuffle();
+			}
+			
+			
 			simulation.numOrder();
 		}
 		//simulation.toOne();
@@ -72,12 +79,16 @@ public class Simulation implements Comparable<Simulation>{
 		for(Car c: this.cars) {
 			c.restart();
 		}
-		this.order = this.mutateO();
-		this.greenLightConfig = this.mutateG();
+		//this.order = this.mutateO();
+		//this.greenLightConfig = this.mutateG();
 	}
 	
 	private void numOrder() {
 		this.order = new Order();
+		this.order.setCrosoverStable(true);
+		this.order.setCrosoverType(Crosover.Ordered);
+		this.order.setMutationRate(0.1);
+		this.order.setMutationType(Mutation.Flip);
 		for(Intersection i : getIntersections()) {
 			order.add(i.numOrder());
 		}
@@ -85,6 +96,10 @@ public class Simulation implements Comparable<Simulation>{
 	
 	private void toOne() {
 		this.greenLightConfig = new GreenlightConfig();
+		this.greenLightConfig.setCrosoverStable(false);
+		this.greenLightConfig.setCrosoverType(Crosover.SinglePoint);
+		this.greenLightConfig.setMutationRate(0.1);
+		this.greenLightConfig.setMutationType(Mutation.RND);
 		for(Intersection i : getIntersections()) {
 			
 			getGreenLightConfig().add(i.setGreenTimeToOne());
@@ -92,6 +107,11 @@ public class Simulation implements Comparable<Simulation>{
 	}
 	private void shuffle() {
 		this.greenLightConfig = new GreenlightConfig();
+		this.greenLightConfig = new GreenlightConfig();
+		this.greenLightConfig.setCrosoverStable(false);
+		this.greenLightConfig.setCrosoverType(Crosover.SinglePoint);
+		this.greenLightConfig.setMutationRate(0.1);
+		this.greenLightConfig.setMutationType(Mutation.RND);
 		for(Intersection i : getIntersections()) {
 			getGreenLightConfig().add(i.shuffleGreenTime(this.duration));
 			//simulation.getGreenLightConfig().add(i.setGreenTimeToOne());
@@ -125,6 +145,26 @@ public class Simulation implements Comparable<Simulation>{
 	public GreenlightConfig getGreenLightConfig() {
 		return greenLightConfig;
 	}
+	public Order getOrder() {
+		return order;
+	}
+	public void setOrder(Chromosom c,boolean mutate) {
+		Order o =new Order(c);
+		if(mutate) {
+			o.mutate();
+		}
+		setOrder(o);
+	}
+	
+	public void setGreenlightConfig(Chromosom c,boolean mutate) {
+		GreenlightConfig g = new GreenlightConfig(c);
+		g.setDuration(duration);
+		if(mutate) {
+			g.mutate();
+		}
+		setGreenLightConfig(g);
+	}
+	
 	public void setOrder(Order order) {
 		this.order =order;
 		for(int i = 0;i<this.order.getConfig().size();i++) {
